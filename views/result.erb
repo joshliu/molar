@@ -30,15 +30,13 @@
 
   <body style='background:#0976b4;'>
     <div class="container"><center>
-      <h2><%= @compound %>: <strong><%= @mass %> grams</strong></h2>
-
-      <h3> Calculate again? </h3>
+      <h2 style="font-weight:lighter; font-size:40pt; margin-top:5%;"><%= @compound %>: <strong><%= @mass %> grams</strong></h2>
       <form action="/form" method="post">
-          <input type="text" name="message" class="form-control" style="width:50%;">
+          <input type="text" name="message" class="form-control" style="width:60%; height:60px; font-size:24pt; margin-top:40px; font-weight:lighter;" placeholder="Enter a compound:">
       </form>
 
       <hr noshadow style='margin:30px;'>
-      <h2>Making a solution of <%= @compound %>?</h2>
+      <h2 style="font-weight:lighter; margin:15px;">Making a solution of <%= @compound %>?</h2>
       <form action="/concentration" method="post">
         <p>
         <input type="text" name="volume" class="form-control" style="width:200px;" placeholder="Volume (in Liters)"><br>
