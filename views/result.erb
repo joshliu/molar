@@ -34,15 +34,15 @@
 
       <h3> Calculate again? </h3>
       <form action="/form" method="post">
-          <input type="text" name="message" class="form-control">
+          <input type="text" name="message" class="form-control" style="width:50%;">
       </form>
 
       <hr noshadow style='margin:30px;'>
       <h2>Making a solution of <%= @compound %>?</h2>
       <form action="/concentration" method="post">
         <p>
-        <input type="text" name="volume" class="form-control" style="width:200px;" placeholder="Volume"><br>
-        <input type="text" name="molarity" class="form-control" style="width:200px;" placeholder="Concentration"><br>
+        <input type="text" name="volume" class="form-control" style="width:200px;" placeholder="Volume (in Liters)"><br>
+        <input type="text" name="molarity" class="form-control" style="width:200px;" placeholder="Concentration (in Molarity)"><br>
         </p>
         <input type="submit" class="btn">
       </form>
