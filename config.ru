@@ -1,2 +1,2 @@
-require 'molar_mass'
+require './molar_mass'
 run Sinatra::Application
