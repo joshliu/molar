@@ -1,6 +1,4 @@
 require 'sinatra'
-require 'pry'
-require 'active_record'
 
 MASSES = {
   "H" => 1.008,
