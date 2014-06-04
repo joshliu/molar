@@ -36,6 +36,18 @@
       <form action="/form" method="post">
           <input type="text" name="message" class="form-control">
       </form>
+
+      <hr noshadow style='margin:30px;'>
+      <h2>Making a solution of <%= @compound %>?</h2>
+      <form action="/concentration" method="post">
+        <p>
+        Volume: <input type="text" name="volume"> Liters <br>
+        </p><p>
+        Molarity: <input type="text" name="molarity"> Molar <br>
+        </p>
+        <input type="submit" class="btn">
+      </form>
+
     </center>
     </div><!-- /.container -->
 

@@ -246,8 +246,24 @@ get '/form' do
   erb :form
 end
 
+mass1 = 0
+
 post '/form' do
-  @mass = molar_mass(params[:message])
-  @compound = params[:message]
-  erb :result
+  begin
+    @mass = molar_mass(params[:message])
+    @compound = params[:message]
+    mass1 = @mass
+  rescue
+    erb :error
+  else
+    erb :result
+  end
+end
+
+post '/concentration' do
+  @volume = params[:volume]
+  @molarity = params[:molarity]
+  @moles = @volume.to_f * @molarity.to_f
+  @calculated = @moles*mass1
+  erb :molar
 end
