@@ -247,12 +247,14 @@ get '/form' do
 end
 
 mass1 = 0
+compound = 0
 
 post '/form' do
   begin
     @mass = molar_mass(params[:message])
     @compound = params[:message]
     mass1 = @mass
+    compound = @compound
   rescue
     erb :error
   else
@@ -265,5 +267,6 @@ post '/concentration' do
   @molarity = params[:molarity]
   @moles = @volume.to_f * @molarity.to_f
   @calculated = @moles*mass1
+  @compound = compound
   erb :molar
 end
