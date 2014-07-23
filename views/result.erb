@@ -32,17 +32,17 @@
     <div class="container"><center>
       <h2 style="font-weight:lighter; font-size:40pt; margin-top:5%;"><%= @compound %>: <strong><%= @mass %> grams</strong></h2>
       <form action="/form" method="post">
-          <input type="text" name="message" class="form-control" style="width:60%; height:60px; font-size:24pt; margin-top:40px; font-weight:lighter;" placeholder="Enter a compound:">
+          <input type="text" name="message" class="form-control" style="width:60%; height:60px; font-size:24pt; margin-top:40px; font-weight:lighter;" placeholder="Enter Something...">
       </form>
 
       <hr noshadow style='margin:30px;'>
       <h2 style="font-weight:lighter; margin:15px;">Making a solution of <%= @compound %>?</h2>
       <form action="/concentration" method="post">
         <p>
-        <input type="text" name="volume" class="form-control" style="width:200px;" placeholder="Volume (in Liters)"><br>
-        <input type="text" name="molarity" class="form-control" style="width:200px;" placeholder="Concentration (in Molarity)"><br>
+        <input type="text" name="volume" class="form-control" style="width:140px;" placeholder="Volume"><br>
+        <input type="text" name="molarity" class="form-control" style="width:140px;" placeholder="Concentration">
         </p>
-        <input type="submit" class="btn">
+        <input type="submit" class="btn" text="Submit">
       </form>
 
     </center>
