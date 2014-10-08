@@ -242,6 +242,10 @@ get '/' do
   erb :index
 end
 
+get '/calculate/:entry' do
+  "{\"#{params[:entry]}\": #{molar_mass(params[:entry])}}"
+end
+
 get '/form' do
   erb :form
 end
