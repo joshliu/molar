@@ -263,6 +263,8 @@ post '/form' do
     @compound = params[:message]
     mass1 = @mass
     compound = @compound
+  rescue SystemStackError
+    erb :error
   rescue
     erb :error
   else
