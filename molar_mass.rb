@@ -200,7 +200,11 @@ def molar_mass(compound)
 			elsif x.is_upper?
 				if compound[i+1] != nil
 					if compound[i+1].is_lower?
-						formatted << compound[i..i+1].join
+            if compound[i+2].is_lower?
+              formatted << compound[i..i+2].join
+            else
+						  formatted << compound[i..i+1].join
+            end
 					else
 						formatted << compound[i]
 					end
