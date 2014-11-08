@@ -123,11 +123,11 @@ MASSES = {
 
 class String
   def is_upper?
-    self == self.upcase && self != self.downcase
+    self == self.upcase && self != self.downcase && self.class != nil
   end
 
   def is_lower?
-    self == self.downcase && self != self.upcase
+    self == self.downcase && self != self.upcase && self.class != nil
   end
 
   def is_element?
@@ -246,7 +246,7 @@ get '/' do
   erb :index
 end
 
-get '/calculate/:entry' do
+get '/api/:entry' do
   "{\"#{params[:entry]}\": #{molar_mass(params[:entry])}}"
 end
 
