@@ -123,11 +123,11 @@ MASSES = {
 
 class String
   def is_upper?
-    self == self.upcase && self != self.downcase && self.class != nil
+    self == self.upcase && self != self.downcase && self != nil
   end
 
   def is_lower?
-    self == self.downcase && self != self.upcase && self.class != nil
+    self == self.downcase && self != self.upcase && self != nil
   end
 
   def is_element?
@@ -198,19 +198,27 @@ def molar_mass(compound)
 			if x.is_lower?
 				next
 			elsif x.is_upper?
+
 				if compound[i+1] != nil
-					if compound[i+1].is_lower?
-            if compound[i+2].is_lower?
+					if compound[i+2] != nil
+            if compound[i+1].is_lower? && compound[i+2].is_lower?
               formatted << compound[i..i+2].join
+            elsif compound[i+1].is_lower?
+              formatted << compound[i..i+1].join
             else
-						  formatted << compound[i..i+1].join
+              formatted << compound[i]
             end
-					else
-						formatted << compound[i+1]
-					end
+          else
+            if compound[i+1].is_lower?
+              formatted << compound[i..i+1].join
+            else
+              formatted << compound[i]
+            end
+          end
 				else
           formatted << compound[i]
         end
+
 			elsif x.to_i > 0 || x == "0"
 				if compound[i+1].to_i > 0 || compound[i+1] == "0"
 					formatted << compound[i..i+1].join.to_i
