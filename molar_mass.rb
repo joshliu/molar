@@ -206,7 +206,7 @@ def molar_mass(compound)
 						  formatted << compound[i..i+1].join
             end
 					else
-						formatted << compound[i]
+						formatted << compound[i+1]
 					end
 				else
           formatted << compound[i]
