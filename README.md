@@ -1,3 +1,5 @@
-Built with Sinatra
+Molar Mass Calculator
 =================================
-Dedicated to my Chemistry Teacher Dr. Weber
+Built with Sinatra.
+
+Dedicated to my Chemistry Teacher Dr. Weber.
