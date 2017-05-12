@@ -1,5 +1,4 @@
-#require 'sinatra'
-require 'pry'
+require 'sinatra'
 
 MASSES = {
   "H" => 1.008,
@@ -173,48 +172,46 @@ def calculate_mass(arr)
       mass += MASSES[arr[i]] if MASSES[arr[i]]
     end
   end
-  return mass
+  return mass.round(3)
 end
 
-binding.pry
+######### WEB APP STARTS HERE
 
-        
+get '/' do
+  erb :index
+end
 
-# get '/' do
-#   erb :index
-# end
+get '/api/:entry' do
+  "{\"#{params[:entry]}\": #{molar_mass(params[:entry])}}"
+end
 
-# get '/api/:entry' do
-#   "{\"#{params[:entry]}\": #{molar_mass(params[:entry])}}"
-# end
+get '/form' do
+  erb :form
+end
 
-# get '/form' do
-#   erb :form
-# end
+mass1 = 0
+compound = 0
 
-# mass1 = 0
-# compound = 0
+post '/form' do
+  begin
+    @mass = molar_mass(params[:message])
+    @compound = params[:message]
+    mass1 = @mass
+    compound = @compound
+  rescue SystemStackError
+    erb :error
+  rescue
+    erb :error
+  else
+    erb :result
+  end
+end
 
-# post '/form' do
-#   begin
-#     @mass = molar_mass(params[:message])
-#     @compound = params[:message]
-#     mass1 = @mass
-#     compound = @compound
-#   rescue SystemStackError
-#     erb :error
-#   rescue
-#     erb :error
-#   else
-#     erb :result
-#   end
-# end
-
-# post '/concentration' do
-#   @volume = params[:volume]
-#   @molarity = params[:molarity]
-#   @moles = @volume.to_f * @molarity.to_f
-#   @calculated = @moles*mass1
-#   @compound = compound
-#   erb :molar
-# end
+post '/concentration' do
+  @volume = params[:volume]
+  @molarity = params[:molarity]
+  @moles = @volume.to_f * @molarity.to_f
+  @calculated = @moles*mass1
+  @compound = compound
+  erb :molar
+end
