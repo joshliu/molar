@@ -1,4 +1,5 @@
-require 'sinatra'
+#require 'sinatra'
+require 'pry'
 
 MASSES = {
   "H" => 1.008,
@@ -121,170 +122,99 @@ MASSES = {
   "Uuo" => 294.0
 }
 
-class String
-  def is_upper?
-    self == self.upcase && self != self.downcase && self != nil
-  end
+# parse(str) takes in a string and returns a nested array of chars
+require 'pry'
 
-  def is_lower?
-    self == self.downcase && self != self.upcase && self != nil
-  end
-
-  def is_element?
-    if MASSES[self] != nil
-      return true
-    else
-      return false
-    end
-  end
-end
-
-class Array
-  def contains_only(some_class)
-    contains = true
-    self.each do |x|
-      if x.class == some_class
-        next
+def parse(str)
+  arr = [[]]
+  cur = ""
+  paren_count = 0
+  str.chars.each do |c|
+    if c == "("
+      arr << []
+    elsif c == ")"
+      temp = arr.pop()
+      arr[-1] << temp
+    elsif "0" <= c && c <= "9"
+      if arr[-1][-1].class == Integer
+        arr[-1][-1] = arr[-1][-1] * 10 + c.to_i
       else
-        contains = false
+        arr[-1] << c.to_i
       end
-    end
-    return contains
-  end
-
-  def format
-    self.each_with_index do |x,i|
-      if x.class == Fixnum
-        if self[i-1] != ")"
-          self[i-1] = self[i-1]*x
-          self.delete_at(i)
-        else
-          next
-        end
-      elsif x == "("
-        self.each_with_index do |x2,i2|
-          if x2 == ")"
-            m = self[i+1...i2].format
-            self.insert(i,m)
-            (i2+1-i).times {self.delete_at(i+1)}
-            return self
-          end
-        end
-      end
-    end
-    if self.contains_only(Float)
-      return self.reduce(:+)
+    elsif "a" <= c && c <= "z"
+      arr[-1][-1] += c
     else
-      self.format
+      arr[-1] << c
     end
   end
-
+  return arr[0]
 end
 
-def molar_mass(compound)
+# molar_mass takes in a string and returns the float represented by the string
+def molar_mass(str)
+  return calculate_mass(parse(str))
+end
 
-  formatted = []
-
-  compound = compound.split("")
-
-  compound.each_with_index do |x,i|
-    if compound.length == 1
-      if x.is_element?
-        return MASSES[x]
-      else
-        return "wat"
-      end
+def calculate_mass(arr)
+  arr_len = arr.length
+  mass = 0
+  cur_elem = ""
+  (0..arr_len).each do |i|
+    if i == (arr_len - 1)
+      mass += calculate_mass(arr[i]) if arr[i].class == Array
+      mass += MASSES[arr[i]] if MASSES[arr[i]]
+    elsif arr[i].class == Array && arr[i+1].class == Integer  
+      mass += calculate_mass(arr[i]) * arr[i+1]
+    elsif arr[i].class == Array
+      mass += calculate_mass(arr[i])
+    elsif arr[i].class == String && arr[i+1].class == Integer && MASSES[arr[i]]
+      mass +=  MASSES[arr[i]] * arr[i+1]
     else
-      if x.is_lower?
-        next
-      elsif x.is_upper?
-
-        if compound[i+1] != nil
-          if compound[i+2] != nil
-            if compound[i+1].is_lower? && compound[i+2].is_lower?
-              formatted << compound[i..i+2].join
-            elsif compound[i+1].is_lower?
-              formatted << compound[i..i+1].join
-            else
-              formatted << compound[i]
-            end
-          else
-            if compound[i+1].is_lower?
-              formatted << compound[i..i+1].join
-            else
-              formatted << compound[i]
-            end
-          end
-        else
-          formatted << compound[i]
-        end
-
-      elsif x.to_i > 0 || x == "0"
-        if compound[i+1].to_i > 0 || compound[i+1] == "0"
-          formatted << compound[i..i+1].join.to_i
-          compound.delete_at(i+1)
-        else
-          formatted << x.to_i
-        end
-      else
-        formatted << x
-      end
+      mass += MASSES[arr[i]] if MASSES[arr[i]]
     end
   end
-
-  formatted.each_with_index do |x,i|
-    if x.class == String
-      if x.is_element?
-        formatted[i] = MASSES[x]
-      end
-    end
-  end
-
-  until formatted.contains_only(Float)
-    formatted.flatten!
-    formatted.format
-  end
-
-  return formatted.reduce(:+).round(3)
-
-
+  return mass
 end
 
-get '/' do
-  erb :index
-end
+binding.pry
 
-get '/api/:entry' do
-  "{\"#{params[:entry]}\": #{molar_mass(params[:entry])}}"
-end
+        
 
-get '/form' do
-  erb :form
-end
+# get '/' do
+#   erb :index
+# end
 
-mass1 = 0
-compound = 0
+# get '/api/:entry' do
+#   "{\"#{params[:entry]}\": #{molar_mass(params[:entry])}}"
+# end
 
-post '/form' do
-  begin
-    @mass = molar_mass(params[:message])
-    @compound = params[:message]
-    mass1 = @mass
-    compound = @compound
-  rescue SystemStackError
-    erb :error
-  rescue
-    erb :error
-  else
-    erb :result
-  end
-end
+# get '/form' do
+#   erb :form
+# end
 
-post '/concentration' do
-  @volume = params[:volume]
-  @molarity = params[:molarity]
-  @moles = @volume.to_f * @molarity.to_f
-  @calculated = @moles*mass1
-  @compound = compound
-  erb :molar
-end
+# mass1 = 0
+# compound = 0
+
+# post '/form' do
+#   begin
+#     @mass = molar_mass(params[:message])
+#     @compound = params[:message]
+#     mass1 = @mass
+#     compound = @compound
+#   rescue SystemStackError
+#     erb :error
+#   rescue
+#     erb :error
+#   else
+#     erb :result
+#   end
+# end
+
+# post '/concentration' do
+#   @volume = params[:volume]
+#   @molarity = params[:molarity]
+#   @moles = @volume.to_f * @molarity.to_f
+#   @calculated = @moles*mass1
+#   @compound = compound
+#   erb :molar
+# end
