@@ -121,7 +121,7 @@ MASSES = {
   "Uuo" => 294.0
 }
 
-# parse(str) takes in a string and returns a nested array of chars
+# parse(str) takes in a string and returns a nested array of compounds and coefficients
 require 'pry'
 
 def parse(str)
@@ -149,11 +149,7 @@ def parse(str)
   return arr[0]
 end
 
-# molar_mass takes in a string and returns the float represented by the string
-def molar_mass(str)
-  return calculate_mass(parse(str))
-end
-
+# calculate mass recursively calculates molar mass from a nested array produced from parse()
 def calculate_mass(arr)
   arr_len = arr.length
   mass = 0
@@ -175,14 +171,20 @@ def calculate_mass(arr)
   return mass.round(3)
 end
 
+# molar_mass takes in a string and returns the float of the compound represented by the string.
+# NOTE: uses parse() and calculate_mass() helper funtions
+# example usage:
+#   molar_mass("H2O")
+#   molar_mass("Al2(SO4)3")
+
+def molar_mass(str)
+  return calculate_mass(parse(str))
+end
+
 ######### WEB APP STARTS HERE
 
 get '/' do
   erb :index
-end
-
-get '/api/:entry' do
-  "{\"#{params[:entry]}\": #{molar_mass(params[:entry])}}"
 end
 
 get '/form' do

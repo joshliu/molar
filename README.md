@@ -1,5 +1,5 @@
 Molar Mass Calculator
 =================================
-Built with Sinatra.
+Built with Sinatra and Ruby.
 
-Dedicated to my Chemistry Teacher Dr. Weber.
+Evaluates arbitarily nested chemical compounds.
